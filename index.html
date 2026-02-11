@@ -7,15 +7,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap');
+        /* BRANDING UPDATE: Imported 'Outfit' for that modern, architectural look found in high-end landscaping brands */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@300;500;700&display=swap');
 
         :root {
-            --color-bg: #F5F5F0;
+            /* SALT LANDSCAPING PALETTE: Coastal Arid */
+            --color-bg: #FAFAF9; /* Stone 50 - Warm Sand/Limestone */
             --color-card: #FFFFFF;
-            --color-text-main: #1F2937;
-            --color-text-muted: #64748B;
-            --color-accent: #D97706; /* Amber 600 - "Toolbox Orange" */
-            --color-secondary: #475569; /* Slate 600 - "Steel" */
+            --color-text-main: #1C1917; /* Stone 900 - Deep Earth */
+            --color-text-muted: #78716C; /* Stone 500 */
+            
+            /* Primary Brand: Muted Terracotta (Nod to "Cactus Culture" roots) */
+            --color-accent: #C05621; 
+            /* Secondary Brand: Coastal Sage/Olive */
+            --color-secondary: #577C66; 
+            /* UI Elements: Warm Stone */
+            --color-border: #E7E5E4;
         }
 
         body {
@@ -25,10 +32,11 @@
         }
 
         h1, h2, h3, .heading-font {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif; /* Geometric, modern header font */
+            letter-spacing: -0.02em;
         }
 
-        /* Chart Container Styling (Mandatory) */
+        /* Chart Container Styling */
         .chart-container {
             position: relative;
             width: 100%;
@@ -45,7 +53,7 @@
             }
         }
 
-        /* Custom Scrollbar */
+        /* Custom Scrollbar - Earth Tones */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -53,77 +61,100 @@
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background-color: #CBD5E1;
+            background-color: #D6D3D1; /* Stone 300 */
             border-radius: 20px;
         }
 
         /* Interactive Elements */
         .nav-item {
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            border-left: 3px solid transparent; /* Left border for clean architectural feel */
+            border-right: none;
         }
-        .nav-item:hover, .nav-item.active {
-            background-color: #FEF3C7; /* Amber 100 */
-            border-right: 4px solid var(--color-accent);
-            color: #92400E;
+        .nav-item:hover {
+            background-color: #F5F5F4; /* Stone 100 */
+            color: var(--color-accent);
+        }
+        .nav-item.active {
+            background-color: #FFF7ED; /* Orange 50 (Very light wash) */
+            border-left: 3px solid var(--color-accent);
+            color: var(--color-accent);
+            font-weight: 600;
         }
 
         .btn-primary {
             background-color: var(--color-accent);
             color: white;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(192, 86, 33, 0.2);
         }
         .btn-primary:hover {
-            background-color: #B45309;
+            background-color: #9C4221;
+            transform: translateY(-1px);
         }
 
-        /* Alignment Visualization Arrow Grid */
+        /* Visualization Grid - Updated to Hexagons for "Salt" Branding */
         .arrow-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            font-size: 24px;
+            gap: 12px;
+            font-size: 20px;
             text-align: center;
         }
         .arrow-item {
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            color: var(--color-secondary);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s;
+            color: #A8A29E; /* Stone 400 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .arrow-item.aligned {
-            transform: rotate(90deg) !important; /* Pointing Right */
-            color: var(--color-accent);
+            transform: rotate(30deg) !important; /* Hex alignment */
+            color: var(--color-secondary); /* Sage Green for alignment */
         }
 
         /* Fade Transition */
         .fade-in {
-            animation: fadeIn 0.4s ease-in-out;
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Honeycomb Bullet */
+        .bullet-hex::before {
+            content: '⬢';
+            color: var(--color-accent);
+            margin-right: 8px;
+            font-size: 0.8em;
+            vertical-align: middle;
+        }
     </style>
-    <!-- Chosen Palette: Warm Neutrals & Industrial Craft (Bone, Steel, Toolbox Orange) -->
-    <!-- Application Structure Plan: Dashboard/Detail layout. Left sidebar (desktop) for navigation between 6 standards. Right side displays dynamic content. Starts with an 'Overview' dashboard. Each standard view has 3 sections: The Concept (Text), The Visual (Interactive Chart/Sim), and The Practice (Actionable steps). Alignment standard uses a custom HTML grid sim. Clients uses a Chart.js line chart. -->
-    <!-- Visualization & Content Choices: 
-         1. Meritocracy: Bar Chart comparing Idea Score (Apprentice w/ Data vs CEO w/o Data). Goal: Compare.
-         2. Alignment: CSS Grid of arrows rotating. Goal: Change/Organize (Visualizing Chaos to Order).
-         3. Curiosity: Doughnut Chart (Ask vs Tell). Goal: Inform/Proportion.
-         4. Quality/Excellence: Radar Chart (Owner vs Renter attributes). Goal: Compare.
-         5. Clients: Dual Line Chart (Internal Stress vs Client Stress). Goal: Change/Relationship (Swan Effect). 
+    <!-- Chosen Palette: Coastal Arid (Warm Stone, Sage Green, Terracotta) -->
+    <!-- Branding Integration: 
+         - Font: 'Outfit' (Modern/Architectural)
+         - Colors: Earthy neutrals with organic accents.
+         - Motifs: Hexagons (Honeycomb) used in alignment viz and bullets.
+         - UI: Softer, organic borders and shadows.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
 <body class="h-screen flex flex-col overflow-hidden">
 
     <!-- Header -->
-    <header class="bg-white shadow-sm z-10 p-4 border-b border-gray-200 flex-none">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm z-10 p-5 border-b border-[#E7E5E4] flex-none">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-800">The Cultural Operating System</h1>
-                <p class="text-sm text-gray-500 hidden md:block">From the Toolbox to the Boardroom</p>
+            <div class="flex items-center gap-3">
+                <!-- CSS Hexagon Logo Placeholder -->
+                <div class="text-[#C05621] text-2xl">⬢</div>
+                <div>
+                    <h1 class="text-2xl font-bold text-stone-900 tracking-tight">The Cultural Operating System</h1>
+                    <p class="text-xs text-stone-500 font-medium tracking-wide uppercase hidden md:block">Salt Landscaping Standards</p>
+                </div>
             </div>
-            <div class="text-sm text-gray-400 font-mono">v2.0</div>
+            <div class="text-xs font-medium text-stone-400 border border-stone-200 px-3 py-1 rounded-full bg-stone-50">v2.1</div>
         </div>
     </header>
 
@@ -131,22 +162,22 @@
     <div class="flex flex-1 overflow-hidden max-w-7xl mx-auto w-full">
         
         <!-- Sidebar Navigation -->
-        <nav class="w-full md:w-64 bg-white border-r border-gray-200 overflow-y-auto flex-none hidden md:block">
-            <div class="p-4 space-y-2">
-                <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Standards</div>
-                <div onclick="renderView('overview')" id="nav-overview" class="nav-item p-3 rounded-md font-medium text-gray-600 active">Overview Dashboard</div>
-                <div onclick="renderView('meritocracy')" id="nav-meritocracy" class="nav-item p-3 rounded-md font-medium text-gray-600">1. Meritocracy</div>
-                <div onclick="renderView('alignment')" id="nav-alignment" class="nav-item p-3 rounded-md font-medium text-gray-600">2. Alignment</div>
-                <div onclick="renderView('curiosity')" id="nav-curiosity" class="nav-item p-3 rounded-md font-medium text-gray-600">3. Curiosity</div>
-                <div onclick="renderView('quality')" id="nav-quality" class="nav-item p-3 rounded-md font-medium text-gray-600">4. Quality</div>
-                <div onclick="renderView('clients')" id="nav-clients" class="nav-item p-3 rounded-md font-medium text-gray-600">5. Clients</div>
-                <div onclick="renderView('excellence')" id="nav-excellence" class="nav-item p-3 rounded-md font-medium text-gray-600">6. Excellence</div>
+        <nav class="w-full md:w-64 bg-white border-r border-[#E7E5E4] overflow-y-auto flex-none hidden md:block">
+            <div class="py-6 pr-4 space-y-1">
+                <div class="px-4 text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-3">Core Pillars</div>
+                <div onclick="renderView('overview')" id="nav-overview" class="nav-item px-4 py-3 text-sm font-medium text-stone-600 active">Overview</div>
+                <div onclick="renderView('meritocracy')" id="nav-meritocracy" class="nav-item px-4 py-3 text-sm font-medium text-stone-600">1. Truth Over Tenure</div>
+                <div onclick="renderView('alignment')" id="nav-alignment" class="nav-item px-4 py-3 text-sm font-medium text-stone-600">2. Disagree & Commit</div>
+                <div onclick="renderView('curiosity')" id="nav-curiosity" class="nav-item px-4 py-3 text-sm font-medium text-stone-600">3. Lead with Questions</div>
+                <div onclick="renderView('quality')" id="nav-quality" class="nav-item px-4 py-3 text-sm font-medium text-stone-600">4. No Excuses</div>
+                <div onclick="renderView('clients')" id="nav-clients" class="nav-item px-4 py-3 text-sm font-medium text-stone-600">5. Delight the Client</div>
+                <div onclick="renderView('excellence')" id="nav-excellence" class="nav-item px-4 py-3 text-sm font-medium text-stone-600">6. Craftsmanship</div>
             </div>
         </nav>
 
         <!-- Mobile Nav (Dropdown) -->
-        <div class="md:hidden w-full bg-white border-b border-gray-200 absolute top-[73px] z-20">
-            <select onchange="renderView(this.value)" class="w-full p-3 bg-transparent font-semibold text-gray-700 outline-none">
+        <div class="md:hidden w-full bg-white border-b border-stone-200 absolute top-[85px] z-20 shadow-sm">
+            <select onchange="renderView(this.value)" class="w-full p-4 bg-transparent font-medium text-stone-700 outline-none">
                 <option value="overview">Overview Dashboard</option>
                 <option value="meritocracy">1. Truth Over Tenure</option>
                 <option value="alignment">2. Disagree and Commit</option>
@@ -158,7 +189,7 @@
         </div>
 
         <!-- Dynamic Content Area -->
-        <main id="content-area" class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50 relative">
+        <main id="content-area" class="flex-1 overflow-y-auto p-4 md:p-10 relative">
             <!-- Content injected via JS -->
         </main>
 
@@ -169,7 +200,7 @@
         // --- State Management ---
         const appState = {
             currentView: 'overview',
-            alignmentState: 'chaos', // 'chaos' or 'aligned'
+            alignmentState: 'chaos', 
             swanEffectVisible: false
         };
 
@@ -184,7 +215,7 @@
             },
             alignment: {
                 title: 'Disagree and Commit',
-                tagline: 'Argument in the Toolbox, Unity on the Tools',
+                tagline: 'Debate in the Studio, Unity on Site',
                 desc: 'We demand a robust forum of ideas, but we require total unity in execution. Consensus is nice, but alignment is mandatory.',
                 practice: 'At the toolbox meeting, we argue like lawyers. Once we’re on the tools, we march like a battalion. If you argued for Plan A but we picked Plan B, you become the biggest Champion for Plan B.',
                 chartType: 'custom-grid'
@@ -201,7 +232,7 @@
                 tagline: 'No Excuses, Just Fixes',
                 desc: 'The ultimate "everyone is a quality control officer" mantra. Ignoring a mistake, or making an excuse for it, is the same as approving it.',
                 practice: 'We trade excuses for ownership. If work isn\'t up to standard, we don\'t blame traffic or tools. We focus energy on solving the problem in the moment, not explaining why it happened.',
-                chartType: 'radar' // Shared with Excellence
+                chartType: 'radar'
             },
             clients: {
                 title: 'Don\'t Just Deliver, Delight',
@@ -215,7 +246,7 @@
                 tagline: 'The Homeowner Test',
                 desc: '"Craftsmanship" implies the work is a personal reflection of the maker. We don\'t ship "good enough."',
                 practice: 'We apply the "Homeowner Test." We regularly ask ourselves: “If I were paying for this out of my own pocket, for my own house, would I accept it done this way?”',
-                chartType: 'radar' // Shared with Quality
+                chartType: 'radar'
             }
         };
 
@@ -249,27 +280,32 @@
             Object.keys(standardsData).forEach((key, index) => {
                 const data = standardsData[key];
                 const card = document.createElement('div');
-                card.className = 'bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer flex flex-col justify-between h-64';
+                // Updated Card Style: Cleaner, "Salt" white card on warm background
+                card.className = 'bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md hover:border-[#C05621]/30 transition-all duration-300 cursor-pointer flex flex-col justify-between h-64 group';
                 card.onclick = () => renderView(key);
                 card.innerHTML = `
                     <div>
-                        <div class="text-xs font-bold text-amber-600 uppercase mb-2">Standard 0${index + 1}</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2 heading-font">${data.title}</h3>
-                        <p class="text-sm text-gray-500 line-clamp-3">${data.desc}</p>
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="text-[10px] font-bold text-stone-400 uppercase tracking-widest border border-stone-200 px-2 py-0.5 rounded bg-stone-50 group-hover:bg-orange-50 group-hover:text-[#C05621] transition-colors">0${index + 1}</div>
+                            <div class="text-stone-300 group-hover:text-[#C05621] transition-colors">⬢</div>
+                        </div>
+                        <h3 class="text-xl font-bold text-stone-800 mb-3 heading-font group-hover:text-stone-900">${data.title}</h3>
+                        <p class="text-sm text-stone-500 line-clamp-3 leading-relaxed">${data.desc}</p>
                     </div>
-                    <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                        <span class="text-xs font-semibold text-slate-500">${data.tagline}</span>
-                        <span class="text-amber-600 text-lg">&rarr;</span>
+                    <div class="mt-4 pt-4 border-t border-stone-100 flex justify-between items-center group-hover:border-orange-100 transition-colors">
+                        <span class="text-xs font-semibold text-stone-400 italic">${data.tagline}</span>
+                        <span class="text-[#C05621] opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">&rarr;</span>
                     </div>
                 `;
                 grid.appendChild(card);
             });
 
             const intro = document.createElement('div');
-            intro.className = 'mb-8 text-center max-w-2xl mx-auto';
+            intro.className = 'mb-10 text-center max-w-2xl mx-auto';
             intro.innerHTML = `
-                <h2 class="text-3xl font-bold text-gray-800 mb-3 heading-font">The Cultural Operating System</h2>
-                <p class="text-gray-600">Explore the 6 core standards that define our work. Click any card to deep dive into the data and practice.</p>
+                <div class="inline-block p-3 rounded-full bg-stone-100 mb-4 text-[#C05621] text-2xl shadow-inner">⬢</div>
+                <h2 class="text-4xl font-bold text-stone-800 mb-3 heading-font tracking-tight">Our Standards</h2>
+                <p class="text-stone-500 text-lg font-light">The algorithm for how we think, design, and build.</p>
             `;
 
             container.appendChild(intro);
@@ -280,31 +316,45 @@
             const data = standardsData[key];
             
             const layout = document.createElement('div');
-            layout.className = 'grid grid-cols-1 lg:grid-cols-2 gap-8';
+            layout.className = 'grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12';
 
             // Left Column: Text & Context
             const textCol = document.createElement('div');
+            textCol.className = 'lg:col-span-5 flex flex-col justify-center';
             textCol.innerHTML = `
-                <div class="mb-2 text-sm font-bold text-amber-600 uppercase tracking-widest">Standard: ${key.toUpperCase()}</div>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 heading-font">${data.title}</h2>
-                <div class="p-4 bg-white rounded-lg border-l-4 border-amber-500 shadow-sm mb-6">
-                    <p class="text-lg font-medium text-gray-800 italic">"${data.tagline}"</p>
+                <div class="mb-3 flex items-center gap-2">
+                    <span class="text-[#C05621] text-lg">⬢</span>
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-[0.2em]">Standard ${getStandardIndex(key)}</span>
                 </div>
-                <div class="prose text-gray-600 mb-8">
-                    <h4 class="font-bold text-gray-900 mb-2">Description</h4>
-                    <p class="mb-4">${data.desc}</p>
-                    <h4 class="font-bold text-gray-900 mb-2">In Practice</h4>
-                    <p>${data.practice}</p>
+                <h2 class="text-4xl md:text-5xl font-bold text-stone-900 mb-6 heading-font leading-tight">${data.title}</h2>
+                <div class="p-6 bg-white rounded-xl border-l-4 border-[#C05621] shadow-sm mb-8">
+                    <p class="text-xl font-medium text-stone-700 italic font-serif leading-relaxed">"${data.tagline}"</p>
+                </div>
+                <div class="prose text-stone-600 mb-8">
+                    <div class="mb-6">
+                        <h4 class="font-bold text-stone-900 mb-2 uppercase text-xs tracking-wider">The Concept</h4>
+                        <p class="leading-relaxed">${data.desc}</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-stone-900 mb-2 uppercase text-xs tracking-wider">In Practice</h4>
+                        <p class="leading-relaxed bullet-hex">${data.practice}</p>
+                    </div>
                 </div>
             `;
 
             // Right Column: Interactive Visualization
             const vizCol = document.createElement('div');
-            vizCol.className = 'bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center min-h-[400px]';
+            vizCol.className = 'lg:col-span-7 bg-white p-6 md:p-8 rounded-2xl shadow-stone border border-stone-100 flex flex-col items-center justify-center min-h-[450px] relative overflow-hidden';
             
+            // Decorative background element
+            const bgDeco = document.createElement('div');
+            bgDeco.className = 'absolute top-0 right-0 text-[200px] text-stone-50 opacity-50 -z-10 pointer-events-none leading-none';
+            bgDeco.innerHTML = '⬢';
+            vizCol.appendChild(bgDeco);
+
             // Visualization Title
             const vizTitle = document.createElement('h3');
-            vizTitle.className = 'text-lg font-semibold text-gray-700 mb-4 w-full text-center border-b pb-2';
+            vizTitle.className = 'text-lg font-bold text-stone-700 mb-6 w-full text-center border-b border-stone-100 pb-3 heading-font';
             vizTitle.innerText = getVizTitle(key);
             vizCol.appendChild(vizTitle);
 
@@ -316,7 +366,7 @@
 
             // Controls (if any)
             const controls = document.createElement('div');
-            controls.className = 'mt-6 w-full flex justify-center';
+            controls.className = 'mt-8 w-full flex justify-center z-10';
             controls.id = 'viz-controls';
             vizCol.appendChild(controls);
 
@@ -328,14 +378,19 @@
             setTimeout(() => initVisualization(key, chartWrapper, controls), 50);
         }
 
+        function getStandardIndex(key) {
+            const map = {meritocracy:'01', alignment:'02', curiosity:'03', quality:'04', clients:'05', excellence:'06'};
+            return map[key];
+        }
+
         function getVizTitle(key) {
             const titles = {
                 meritocracy: 'Impact Score: Tenure vs. Data',
-                alignment: 'The Toolbox vs. The Battalion',
+                alignment: 'The Studio vs. The Site',
                 curiosity: 'Leadership Style Distribution',
-                quality: 'Mindset Analysis: Renter vs. Owner',
+                quality: 'Mindset Analysis: Employee vs. Owner',
                 clients: 'The Swan Effect: Internal vs. External',
-                excellence: 'Mindset Analysis: Renter vs. Owner'
+                excellence: 'Mindset Analysis: Employee vs. Owner'
             };
             return titles[key] || 'Visualization';
         }
@@ -353,12 +408,13 @@
                 new Chart(canvas, {
                     type: 'bar',
                     data: {
-                        labels: [['Apprentice', '(w/ Data)'], ['CEO', '(No Data)']], // Wrap labels
+                        labels: [['Apprentice', '(w/ Data)'], ['CEO', '(No Data)']], 
                         datasets: [{
                             label: 'Impact Score',
                             data: [85, 30],
-                            backgroundColor: ['#D97706', '#94A3B8'],
-                            borderRadius: 6
+                            backgroundColor: ['#C05621', '#E7E5E4'], // Terracotta vs Stone
+                            borderRadius: 4,
+                            barPercentage: 0.6
                         }]
                     },
                     options: {
@@ -366,57 +422,66 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { display: false },
-                            tooltip: {
-                                callbacks: {
-                                    title: (items) => items[0].label.replaceAll(',', ' ')
-                                }
-                            }
+                            tooltip: { backgroundColor: '#1C1917', padding: 12, cornerRadius: 8 }
                         },
                         scales: {
-                            y: { beginAtZero: true, max: 100, title: { display: true, text: 'Decision Weight' } }
+                            y: { 
+                                beginAtZero: true, 
+                                max: 100, 
+                                grid: { color: '#F5F5F4' },
+                                ticks: { font: { family: 'Inter' } }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { family: 'Outfit', weight: 'bold' } }
+                            }
                         }
                     }
                 });
                 
-                controls.innerHTML = `<p class="text-sm text-gray-500 text-center">Data trumps hierarchy. The orange bar wins.</p>`;
+                controls.innerHTML = `<p class="text-sm text-stone-500 text-center italic">Data trumps hierarchy. The terracotta bar wins.</p>`;
             }
 
-            // 2. Alignment (Custom CSS Grid)
+            // 2. Alignment (Custom CSS Grid with Hexagons)
             else if (key === 'alignment') {
                 const grid = document.createElement('div');
                 grid.className = 'arrow-grid';
-                // Create 25 arrows
+                // Create 25 hexagons
                 for(let i=0; i<25; i++) {
                     const arrow = document.createElement('div');
                     arrow.className = 'arrow-item';
-                    arrow.innerHTML = '&#10148;'; // Unicode heavy arrow
+                    arrow.innerHTML = '⬢'; // Hexagon
                     // Random rotation for chaos
-                    arrow.style.transform = `rotate(${Math.floor(Math.random() * 360)}deg)`;
+                    arrow.style.transform = `rotate(${Math.floor(Math.random() * 360)}deg) scale(${0.8 + Math.random()*0.4})`;
                     grid.appendChild(arrow);
                 }
                 wrapper.appendChild(grid);
                 wrapper.style.height = 'auto'; // Auto height for grid
 
                 const btn = document.createElement('button');
-                btn.className = 'btn-primary px-6 py-2 rounded-full font-semibold shadow-sm';
+                btn.className = 'btn-primary px-8 py-3 rounded-md font-semibold text-sm tracking-wide uppercase';
                 btn.innerText = 'Call "On The Tools"';
                 btn.onclick = () => {
                     const arrows = document.querySelectorAll('.arrow-item');
-                    const isAligned = btn.innerText.includes('Toolbox');
+                    const isAligned = btn.innerText.includes('Tools');
                     
                     if (!isAligned) {
-                        // Align them
-                        arrows.forEach(a => a.classList.add('aligned'));
-                        btn.innerText = 'Return to Toolbox Meeting';
-                        btn.classList.replace('bg-amber-600', 'bg-slate-600');
+                        // Align them (Site Mode)
+                        arrows.forEach(a => {
+                            a.classList.add('aligned');
+                            a.style.transform = 'rotate(0deg) scale(1)'; // Uniform
+                            a.innerHTML = '⬢';
+                        });
+                        btn.innerText = 'Return to Studio Debate';
+                        btn.style.backgroundColor = '#577C66'; // Sage Green
                     } else {
-                        // Chaos them
+                        // Chaos them (Studio Mode)
                         arrows.forEach(a => {
                             a.classList.remove('aligned');
-                            a.style.transform = `rotate(${Math.floor(Math.random() * 360)}deg)`;
+                            a.style.transform = `rotate(${Math.floor(Math.random() * 360)}deg) scale(${0.8 + Math.random()*0.4})`;
                         });
                         btn.innerText = 'Call "On The Tools"';
-                        // Reset button color logic if needed, simplifed here
+                        btn.style.backgroundColor = '#C05621'; // Terracotta
                     }
                 };
                 controls.appendChild(btn);
@@ -432,20 +497,21 @@
                         labels: ['Asking (Coaching)', 'Telling (Commanding)'],
                         datasets: [{
                             data: [80, 20],
-                            backgroundColor: ['#D97706', '#CBD5E1'],
-                            borderWidth: 0
+                            backgroundColor: ['#577C66', '#E7E5E4'], // Sage vs Stone
+                            borderWidth: 0,
+                            hoverOffset: 10
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        cutout: '70%',
+                        cutout: '75%',
                         plugins: {
-                            legend: { position: 'bottom' }
+                            legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
                         }
                     }
                 });
-                controls.innerHTML = `<div class="text-center"><span class="text-2xl font-bold text-amber-600">4:1</span><br><span class="text-xs text-gray-500">Target Ask-to-Tell Ratio</span></div>`;
+                controls.innerHTML = `<div class="text-center mt-[-180px] mb-[100px] pointer-events-none relative z-0"><span class="text-4xl font-bold text-[#577C66] heading-font">4:1</span><br><span class="text-xs text-stone-400 font-bold uppercase tracking-widest">Ask Ratio</span></div>`;
             }
 
             // 4 & 6. Quality & Excellence (Radar)
@@ -457,19 +523,21 @@
                     data: {
                         labels: ['Speed of Fix', 'Detail Eye', 'No Excuses', 'Personal Pride', 'Ownership'],
                         datasets: [{
-                            label: 'Homeowner/Owner',
+                            label: 'Homeowner',
                             data: [95, 90, 100, 95, 100],
                             fill: true,
-                            backgroundColor: 'rgba(217, 119, 6, 0.2)',
-                            borderColor: '#D97706',
-                            pointBackgroundColor: '#D97706'
+                            backgroundColor: 'rgba(192, 86, 33, 0.2)', // Terracotta wash
+                            borderColor: '#C05621',
+                            pointBackgroundColor: '#C05621',
+                            pointBorderColor: '#fff'
                         }, {
-                            label: 'Renter/Employee',
+                            label: 'Employee',
                             data: [40, 50, 20, 40, 30],
                             fill: true,
-                            backgroundColor: 'rgba(71, 85, 105, 0.2)',
-                            borderColor: '#475569',
-                            pointBackgroundColor: '#475569'
+                            backgroundColor: 'rgba(231, 229, 228, 0.4)', // Stone wash
+                            borderColor: '#A8A29E',
+                            pointBackgroundColor: '#A8A29E',
+                            pointBorderColor: '#fff'
                         }]
                     },
                     options: {
@@ -477,16 +545,19 @@
                         maintainAspectRatio: false,
                         scales: {
                             r: {
-                                angleLines: { color: '#E2E8F0' },
-                                grid: { color: '#E2E8F0' },
-                                pointLabels: { font: { size: 11 } },
+                                angleLines: { color: '#E7E5E4' },
+                                grid: { color: '#E7E5E4' },
+                                pointLabels: { font: { family: 'Outfit', size: 11, weight: '500' }, color: '#44403C' },
                                 suggestedMin: 0,
-                                suggestedMax: 100
+                                suggestedMax: 100,
+                                ticks: { backdropColor: 'transparent', display: false }
                             }
+                        },
+                        plugins: {
+                            legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
                         }
                     }
                 });
-                controls.innerHTML = `<p class="text-sm text-gray-500 text-center">Comparing the "Homeowner" mindset vs standard employee mindset.</p>`;
             }
 
             // 5. Clients (Line Chart)
@@ -495,6 +566,11 @@
                 wrapper.appendChild(canvas);
                 
                 const ctx = canvas.getContext('2d');
+                // Gradient for the "Chaos"
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(192, 86, 33, 0.4)');
+                gradient.addColorStop(1, 'rgba(192, 86, 33, 0.0)');
+
                 new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -502,35 +578,43 @@
                         datasets: [{
                             label: 'Internal Effort (Paddling)',
                             data: [30, 90, 95, 60, 40],
-                            borderColor: '#D97706',
-                            backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                            borderColor: '#C05621', // Terracotta
+                            backgroundColor: gradient,
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            pointRadius: 0,
+                            pointHoverRadius: 6
                         }, {
                             label: 'Client Stress (Surface)',
                             data: [20, 22, 21, 20, 10], // Flat line
-                            borderColor: '#10B981', // Emerald for calm
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderColor: '#577C66', // Sage
+                            backgroundColor: 'rgba(87, 124, 102, 0.1)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#fff',
+                            borderWidth: 3
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         scales: {
-                            y: { beginAtZero: true, max: 100, title: {display:true, text: 'Intensity'} }
+                            y: { 
+                                beginAtZero: true, 
+                                max: 100, 
+                                grid: { color: '#F5F5F4' },
+                                ticks: { display: false } // Minimalist
+                            },
+                            x: { grid: { display: false } }
                         },
                         plugins: {
-                            tooltip: {
-                                callbacks: {
-                                    title: (items) => items[0].label
-                                }
-                            }
+                            tooltip: { backgroundColor: '#1C1917', padding: 12 },
+                            legend: { position: 'top', align: 'end', labels: { usePointStyle: true } }
                         }
                     }
                 });
-                controls.innerHTML = `<p class="text-sm text-gray-500 text-center">The "Swan Effect": High internal chaos, zero external ripple.</p>`;
+                controls.innerHTML = `<p class="text-sm text-stone-500 text-center italic mt-2">The "Swan Effect": High internal chaos (Orange), zero external ripple (Green).</p>`;
             }
         }
 
