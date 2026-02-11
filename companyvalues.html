@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Standards: The Cultural Operating System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap');
+
+        :root {
+            --color-bg: #F5F5F0;
+            --color-card: #FFFFFF;
+            --color-text-main: #1F2937;
+            --color-text-muted: #64748B;
+            --color-accent: #D97706; /* Amber 600 - "Toolbox Orange" */
+            --color-secondary: #475569; /* Slate 600 - "Steel" */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+        }
+
+        h1, h2, h3, .heading-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Chart Container Styling (Mandatory) */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 20px;
+        }
+
+        /* Interactive Elements */
+        .nav-item {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .nav-item:hover, .nav-item.active {
+            background-color: #FEF3C7; /* Amber 100 */
+            border-right: 4px solid var(--color-accent);
+            color: #92400E;
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: white;
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #B45309;
+        }
+
+        /* Alignment Visualization Arrow Grid */
+        .arrow-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            font-size: 24px;
+            text-align: center;
+        }
+        .arrow-item {
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--color-secondary);
+        }
+        .arrow-item.aligned {
+            transform: rotate(90deg) !important; /* Pointing Right */
+            color: var(--color-accent);
+        }
+
+        /* Fade Transition */
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals & Industrial Craft (Bone, Steel, Toolbox Orange) -->
+    <!-- Application Structure Plan: Dashboard/Detail layout. Left sidebar (desktop) for navigation between 6 standards. Right side displays dynamic content. Starts with an 'Overview' dashboard. Each standard view has 3 sections: The Concept (Text), The Visual (Interactive Chart/Sim), and The Practice (Actionable steps). Alignment standard uses a custom HTML grid sim. Clients uses a Chart.js line chart. -->
+    <!-- Visualization & Content Choices: 
+         1. Meritocracy: Bar Chart comparing Idea Score (Apprentice w/ Data vs CEO w/o Data). Goal: Compare.
+         2. Alignment: CSS Grid of arrows rotating. Goal: Change/Organize (Visualizing Chaos to Order).
+         3. Curiosity: Doughnut Chart (Ask vs Tell). Goal: Inform/Proportion.
+         4. Quality/Excellence: Radar Chart (Owner vs Renter attributes). Goal: Compare.
+         5. Clients: Dual Line Chart (Internal Stress vs Client Stress). Goal: Change/Relationship (Swan Effect). 
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm z-10 p-4 border-b border-gray-200 flex-none">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">The Cultural Operating System</h1>
+                <p class="text-sm text-gray-500 hidden md:block">From the Toolbox to the Boardroom</p>
+            </div>
+            <div class="text-sm text-gray-400 font-mono">v2.0</div>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <div class="flex flex-1 overflow-hidden max-w-7xl mx-auto w-full">
+        
+        <!-- Sidebar Navigation -->
+        <nav class="w-full md:w-64 bg-white border-r border-gray-200 overflow-y-auto flex-none hidden md:block">
+            <div class="p-4 space-y-2">
+                <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Standards</div>
+                <div onclick="renderView('overview')" id="nav-overview" class="nav-item p-3 rounded-md font-medium text-gray-600 active">Overview Dashboard</div>
+                <div onclick="renderView('meritocracy')" id="nav-meritocracy" class="nav-item p-3 rounded-md font-medium text-gray-600">1. Meritocracy</div>
+                <div onclick="renderView('alignment')" id="nav-alignment" class="nav-item p-3 rounded-md font-medium text-gray-600">2. Alignment</div>
+                <div onclick="renderView('curiosity')" id="nav-curiosity" class="nav-item p-3 rounded-md font-medium text-gray-600">3. Curiosity</div>
+                <div onclick="renderView('quality')" id="nav-quality" class="nav-item p-3 rounded-md font-medium text-gray-600">4. Quality</div>
+                <div onclick="renderView('clients')" id="nav-clients" class="nav-item p-3 rounded-md font-medium text-gray-600">5. Clients</div>
+                <div onclick="renderView('excellence')" id="nav-excellence" class="nav-item p-3 rounded-md font-medium text-gray-600">6. Excellence</div>
+            </div>
+        </nav>
+
+        <!-- Mobile Nav (Dropdown) -->
+        <div class="md:hidden w-full bg-white border-b border-gray-200 absolute top-[73px] z-20">
+            <select onchange="renderView(this.value)" class="w-full p-3 bg-transparent font-semibold text-gray-700 outline-none">
+                <option value="overview">Overview Dashboard</option>
+                <option value="meritocracy">1. Truth Over Tenure</option>
+                <option value="alignment">2. Disagree and Commit</option>
+                <option value="curiosity">3. Lead with Questions</option>
+                <option value="quality">4. No Excuses</option>
+                <option value="clients">5. Delight the Client</option>
+                <option value="excellence">6. Relentless Craftsmanship</option>
+            </select>
+        </div>
+
+        <!-- Dynamic Content Area -->
+        <main id="content-area" class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50 relative">
+            <!-- Content injected via JS -->
+        </main>
+
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- State Management ---
+        const appState = {
+            currentView: 'overview',
+            alignmentState: 'chaos', // 'chaos' or 'aligned'
+            swanEffectVisible: false
+        };
+
+        // --- Data Source ---
+        const standardsData = {
+            meritocracy: {
+                title: 'Truth Over Tenure',
+                tagline: 'Weight the Argument, Not the Title',
+                desc: 'Hierarchy is necessary for logistics and decision making, but it can be toxic for logic. This standard ensures that a good idea from an apprentice beats a bad idea from the CEO.',
+                practice: 'Leaders are encouraged to speak last. We ask junior team members to voice their perspective first to ensure their views aren\'t colored by "manager-following."',
+                chartType: 'bar'
+            },
+            alignment: {
+                title: 'Disagree and Commit',
+                tagline: 'Argument in the Toolbox, Unity on the Tools',
+                desc: 'We demand a robust forum of ideas, but we require total unity in execution. Consensus is nice, but alignment is mandatory.',
+                practice: 'At the toolbox meeting, we argue like lawyers. Once we’re on the tools, we march like a battalion. If you argued for Plan A but we picked Plan B, you become the biggest Champion for Plan B.',
+                chartType: 'custom-grid'
+            },
+            curiosity: {
+                title: 'Lead with Questions',
+                tagline: 'Coach > Command',
+                desc: 'Moves the culture from "command and control" to "coach and collaborate." "Telling" creates followers; "Asking" creates leaders.',
+                practice: 'Instead of saying "Fix this," a leader asks, "I’ve identified a roadblock here, how would you approach solving this before I step in?"',
+                chartType: 'doughnut'
+            },
+            quality: {
+                title: 'The Standard You Walk Past',
+                tagline: 'No Excuses, Just Fixes',
+                desc: 'The ultimate "everyone is a quality control officer" mantra. Ignoring a mistake, or making an excuse for it, is the same as approving it.',
+                practice: 'We trade excuses for ownership. If work isn\'t up to standard, we don\'t blame traffic or tools. We focus energy on solving the problem in the moment, not explaining why it happened.',
+                chartType: 'radar' // Shared with Excellence
+            },
+            clients: {
+                title: 'Don\'t Just Deliver, Delight',
+                tagline: 'The Swan Effect',
+                desc: 'Meeting the contract is baseline. We look for the "plus-one" (extra 5%). We function as guests in their home.',
+                practice: 'Above the surface: Calm, smiling, adaptive. Below the surface: Paddling furiously to fix issues. The client never feels the splash, only the smooth ride.',
+                chartType: 'line'
+            },
+            excellence: {
+                title: 'Relentless Craftsmanship',
+                tagline: 'The Homeowner Test',
+                desc: '"Craftsmanship" implies the work is a personal reflection of the maker. We don\'t ship "good enough."',
+                practice: 'We apply the "Homeowner Test." We regularly ask ourselves: “If I were paying for this out of my own pocket, for my own house, would I accept it done this way?”',
+                chartType: 'radar' // Shared with Quality
+            }
+        };
+
+        // --- Render Functions ---
+
+        function renderView(viewId) {
+            appState.currentView = viewId;
+            const content = document.getElementById('content-area');
+            
+            // Update Nav State
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const navEl = document.getElementById(`nav-${viewId}`);
+            if(navEl) navEl.classList.add('active');
+
+            content.innerHTML = ''; // Clear content
+            content.classList.remove('fade-in');
+            void content.offsetWidth; // Trigger reflow for animation
+            content.classList.add('fade-in');
+
+            if (viewId === 'overview') {
+                renderOverview(content);
+            } else {
+                renderDetail(content, viewId);
+            }
+        }
+
+        function renderOverview(container) {
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+
+            Object.keys(standardsData).forEach((key, index) => {
+                const data = standardsData[key];
+                const card = document.createElement('div');
+                card.className = 'bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer flex flex-col justify-between h-64';
+                card.onclick = () => renderView(key);
+                card.innerHTML = `
+                    <div>
+                        <div class="text-xs font-bold text-amber-600 uppercase mb-2">Standard 0${index + 1}</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2 heading-font">${data.title}</h3>
+                        <p class="text-sm text-gray-500 line-clamp-3">${data.desc}</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
+                        <span class="text-xs font-semibold text-slate-500">${data.tagline}</span>
+                        <span class="text-amber-600 text-lg">&rarr;</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            const intro = document.createElement('div');
+            intro.className = 'mb-8 text-center max-w-2xl mx-auto';
+            intro.innerHTML = `
+                <h2 class="text-3xl font-bold text-gray-800 mb-3 heading-font">The Cultural Operating System</h2>
+                <p class="text-gray-600">Explore the 6 core standards that define our work. Click any card to deep dive into the data and practice.</p>
+            `;
+
+            container.appendChild(intro);
+            container.appendChild(grid);
+        }
+
+        function renderDetail(container, key) {
+            const data = standardsData[key];
+            
+            const layout = document.createElement('div');
+            layout.className = 'grid grid-cols-1 lg:grid-cols-2 gap-8';
+
+            // Left Column: Text & Context
+            const textCol = document.createElement('div');
+            textCol.innerHTML = `
+                <div class="mb-2 text-sm font-bold text-amber-600 uppercase tracking-widest">Standard: ${key.toUpperCase()}</div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 heading-font">${data.title}</h2>
+                <div class="p-4 bg-white rounded-lg border-l-4 border-amber-500 shadow-sm mb-6">
+                    <p class="text-lg font-medium text-gray-800 italic">"${data.tagline}"</p>
+                </div>
+                <div class="prose text-gray-600 mb-8">
+                    <h4 class="font-bold text-gray-900 mb-2">Description</h4>
+                    <p class="mb-4">${data.desc}</p>
+                    <h4 class="font-bold text-gray-900 mb-2">In Practice</h4>
+                    <p>${data.practice}</p>
+                </div>
+            `;
+
+            // Right Column: Interactive Visualization
+            const vizCol = document.createElement('div');
+            vizCol.className = 'bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center min-h-[400px]';
+            
+            // Visualization Title
+            const vizTitle = document.createElement('h3');
+            vizTitle.className = 'text-lg font-semibold text-gray-700 mb-4 w-full text-center border-b pb-2';
+            vizTitle.innerText = getVizTitle(key);
+            vizCol.appendChild(vizTitle);
+
+            // Container for Chart
+            const chartWrapper = document.createElement('div');
+            chartWrapper.className = 'chart-container flex items-center justify-center';
+            chartWrapper.id = 'active-chart-wrapper';
+            vizCol.appendChild(chartWrapper);
+
+            // Controls (if any)
+            const controls = document.createElement('div');
+            controls.className = 'mt-6 w-full flex justify-center';
+            controls.id = 'viz-controls';
+            vizCol.appendChild(controls);
+
+            layout.appendChild(textCol);
+            layout.appendChild(vizCol);
+            container.appendChild(layout);
+
+            // Initialize Visualization after DOM insertion
+            setTimeout(() => initVisualization(key, chartWrapper, controls), 50);
+        }
+
+        function getVizTitle(key) {
+            const titles = {
+                meritocracy: 'Impact Score: Tenure vs. Data',
+                alignment: 'The Toolbox vs. The Battalion',
+                curiosity: 'Leadership Style Distribution',
+                quality: 'Mindset Analysis: Renter vs. Owner',
+                clients: 'The Swan Effect: Internal vs. External',
+                excellence: 'Mindset Analysis: Renter vs. Owner'
+            };
+            return titles[key] || 'Visualization';
+        }
+
+        // --- Visualization Logic ---
+
+        function initVisualization(key, wrapper, controls) {
+            wrapper.innerHTML = ''; // Clear previous
+            controls.innerHTML = '';
+
+            // 1. Meritocracy (Bar Chart)
+            if (key === 'meritocracy') {
+                const canvas = document.createElement('canvas');
+                wrapper.appendChild(canvas);
+                new Chart(canvas, {
+                    type: 'bar',
+                    data: {
+                        labels: [['Apprentice', '(w/ Data)'], ['CEO', '(No Data)']], // Wrap labels
+                        datasets: [{
+                            label: 'Impact Score',
+                            data: [85, 30],
+                            backgroundColor: ['#D97706', '#94A3B8'],
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    title: (items) => items[0].label.replaceAll(',', ' ')
+                                }
+                            }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, max: 100, title: { display: true, text: 'Decision Weight' } }
+                        }
+                    }
+                });
+                
+                controls.innerHTML = `<p class="text-sm text-gray-500 text-center">Data trumps hierarchy. The orange bar wins.</p>`;
+            }
+
+            // 2. Alignment (Custom CSS Grid)
+            else if (key === 'alignment') {
+                const grid = document.createElement('div');
+                grid.className = 'arrow-grid';
+                // Create 25 arrows
+                for(let i=0; i<25; i++) {
+                    const arrow = document.createElement('div');
+                    arrow.className = 'arrow-item';
+                    arrow.innerHTML = '&#10148;'; // Unicode heavy arrow
+                    // Random rotation for chaos
+                    arrow.style.transform = `rotate(${Math.floor(Math.random() * 360)}deg)`;
+                    grid.appendChild(arrow);
+                }
+                wrapper.appendChild(grid);
+                wrapper.style.height = 'auto'; // Auto height for grid
+
+                const btn = document.createElement('button');
+                btn.className = 'btn-primary px-6 py-2 rounded-full font-semibold shadow-sm';
+                btn.innerText = 'Call "On The Tools"';
+                btn.onclick = () => {
+                    const arrows = document.querySelectorAll('.arrow-item');
+                    const isAligned = btn.innerText.includes('Toolbox');
+                    
+                    if (!isAligned) {
+                        // Align them
+                        arrows.forEach(a => a.classList.add('aligned'));
+                        btn.innerText = 'Return to Toolbox Meeting';
+                        btn.classList.replace('bg-amber-600', 'bg-slate-600');
+                    } else {
+                        // Chaos them
+                        arrows.forEach(a => {
+                            a.classList.remove('aligned');
+                            a.style.transform = `rotate(${Math.floor(Math.random() * 360)}deg)`;
+                        });
+                        btn.innerText = 'Call "On The Tools"';
+                        // Reset button color logic if needed, simplifed here
+                    }
+                };
+                controls.appendChild(btn);
+            }
+
+            // 3. Curiosity (Doughnut)
+            else if (key === 'curiosity') {
+                const canvas = document.createElement('canvas');
+                wrapper.appendChild(canvas);
+                new Chart(canvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Asking (Coaching)', 'Telling (Commanding)'],
+                        datasets: [{
+                            data: [80, 20],
+                            backgroundColor: ['#D97706', '#CBD5E1'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+                controls.innerHTML = `<div class="text-center"><span class="text-2xl font-bold text-amber-600">4:1</span><br><span class="text-xs text-gray-500">Target Ask-to-Tell Ratio</span></div>`;
+            }
+
+            // 4 & 6. Quality & Excellence (Radar)
+            else if (key === 'quality' || key === 'excellence') {
+                const canvas = document.createElement('canvas');
+                wrapper.appendChild(canvas);
+                new Chart(canvas, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Speed of Fix', 'Detail Eye', 'No Excuses', 'Personal Pride', 'Ownership'],
+                        datasets: [{
+                            label: 'Homeowner/Owner',
+                            data: [95, 90, 100, 95, 100],
+                            fill: true,
+                            backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                            borderColor: '#D97706',
+                            pointBackgroundColor: '#D97706'
+                        }, {
+                            label: 'Renter/Employee',
+                            data: [40, 50, 20, 40, 30],
+                            fill: true,
+                            backgroundColor: 'rgba(71, 85, 105, 0.2)',
+                            borderColor: '#475569',
+                            pointBackgroundColor: '#475569'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: '#E2E8F0' },
+                                grid: { color: '#E2E8F0' },
+                                pointLabels: { font: { size: 11 } },
+                                suggestedMin: 0,
+                                suggestedMax: 100
+                            }
+                        }
+                    }
+                });
+                controls.innerHTML = `<p class="text-sm text-gray-500 text-center">Comparing the "Homeowner" mindset vs standard employee mindset.</p>`;
+            }
+
+            // 5. Clients (Line Chart)
+            else if (key === 'clients') {
+                const canvas = document.createElement('canvas');
+                wrapper.appendChild(canvas);
+                
+                const ctx = canvas.getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Start', 'Issue Occurs', 'Fixing Issue', 'Resolution', 'Delivery'],
+                        datasets: [{
+                            label: 'Internal Effort (Paddling)',
+                            data: [30, 90, 95, 60, 40],
+                            borderColor: '#D97706',
+                            backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }, {
+                            label: 'Client Stress (Surface)',
+                            data: [20, 22, 21, 20, 10], // Flat line
+                            borderColor: '#10B981', // Emerald for calm
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 100, title: {display:true, text: 'Intensity'} }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    title: (items) => items[0].label
+                                }
+                            }
+                        }
+                    }
+                });
+                controls.innerHTML = `<p class="text-sm text-gray-500 text-center">The "Swan Effect": High internal chaos, zero external ripple.</p>`;
+            }
+        }
+
+        // Initialize App
+        window.onload = () => {
+            renderView('overview');
+        };
+
+    </script>
+</body>
+</html>
